@@ -122,6 +122,55 @@ draft → source_linked → metadata_reviewed → file_verified
 
 ---
 
+## 🚀 Quick Start
+
+```bash
+# 1. Create virtual environment
+python -m venv venv
+source venv/bin/activate  # Linux/macOS
+# venv\Scripts\activate   # Windows
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Copy environment config
+cp .env.example .env
+
+# 4. Seed the database
+python -m backend.services.seed_service
+
+# 5. Run the application
+uvicorn backend.main:app --reload
+
+# 6. Visit
+# http://127.0.0.1:8000/
+# http://127.0.0.1:8000/api/health
+```
+
+## Run Tests
+
+```bash
+pytest tests/ -v
+```
+
+## Project Structure
+
+```
+backend/
+  main.py          — FastAPI app and routes
+  config.py        — Settings from .env
+  database.py      — SQLAlchemy engine and session
+  models/          — 13 ORM tables
+  schemas/         — Pydantic validation
+  services/        — Hash and seed services
+data/
+  reviewed/        — Approved seed content
+  drafts/          — Quarantined legacy content
+tests/             — Automated tests
+```
+
+---
+
 ## 🏗️ Technology Architecture
 
 ```text
@@ -161,15 +210,15 @@ Jinja2 / HTML interface
 
 | | Item |
 |---|---|
-| ✅ | FastAPI skeleton · root & `/api/health` · SQLite connection · legacy models · 5 JSON case files · legacy hash & seed scripts |
-| 🚧 | Approved **13-table schema** & models · updated Pydantic schemas · Python hash service · draft quarantine · transactional idempotent seeding · test suite |
+| ✅ | FastAPI skeleton · root & `/api/health` · SQLite connection · 13-table schema · Pydantic validation · Python SHA-256 hash service · draft quarantine · transactional idempotent seeding · test suite |
 | 🔮 | Public browsing · court-learning pages · search · comparison · multi-factor relevance · AI-assisted extraction (human-reviewed) |
-
-**Immediate plan:** commit approved docs → clean Python 3.12 env → refactor models → implement schema → Pydantic validation → `hash_service.py` → quarantine drafts → replace seeding → add tests.
 
 ---
 
-## ⚠️ Legal Boundaries
+## ⚠️ Disclaimer
+
+LexGuard provides **educational legal information**, not legal advice.
+Official sources remain authoritative at all times.
 
 > 🚫 LexGuard is **not** an AI lawyer, advice chatbot, outcome predictor, court-management/filing system, or official court website — and never replaces an advocate or databases like SCC Online / Manupatra / eCourts.
 > It never tells a user what to do in a specific case and claims **no official court affiliation**.
