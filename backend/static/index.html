@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LexGuard — Legal Learning & Case-Reference Platform for India</title>
+  <meta name="description" content="LexGuard is an open-source legal-learning and case-reference platform that organizes information from official Indian sources into structured, traceable records." />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="site-header" role="banner">
+    <div class="site-header__inner">
+      <a href="#home" class="brand" data-route="home" aria-label="LexGuard home">
+        <span class="brand__mark" aria-hidden="true">⚖️</span>
+        <span class="brand__name">LexGuard</span>
+      </a>
+
+      <button
+        type="button"
+        id="menuToggle"
+        class="menu-toggle"
+        aria-label="Toggle navigation menu"
+        aria-controls="siteNav"
+        aria-expanded="false"
+      >
+        <span class="menu-toggle__bar" aria-hidden="true"></span>
+        <span class="menu-toggle__bar" aria-hidden="true"></span>
+        <span class="menu-toggle__bar" aria-hidden="true"></span>
+      </button>
+
+      <nav id="siteNav" class="site-nav" aria-label="Primary">
+        <ul class="site-nav__list">
+          <li><a href="#home" class="site-nav__link" data-route="home">Home</a></li>
+          <li><a href="#dashboard" class="site-nav__link" data-route="dashboard">Dashboard</a></li>
+          <li><a href="#drafts" class="site-nav__link" data-route="drafts">Drafts</a></li>
+          <li><a href="#sources" class="site-nav__link" data-route="sources">Sources</a></li>
+          <li><a href="#case-editor" class="site-nav__link" data-route="case-editor">Case Editor</a></li>
+          <li><a href="#court-learning" class="site-nav__link" data-route="court-learning">Court Learning</a></li>
+          <li><a href="#review-status" class="site-nav__link" data-route="review-status">Review Status</a></li>
+          <li><a href="#hash-demo" class="site-nav__link" data-route="hash-demo">SHA-256 Demo</a></li>
+          <li><a href="#diagrams" class="site-nav__link" data-route="diagrams">Diagrams</a></li>
+          <li><a href="#about" class="site-nav__link" data-route="about">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div id="navScrim" class="nav-scrim" hidden></div>
+
+  <main id="main-content" class="main-content" role="main">
+
+    <!-- =================== HOME =================== -->
+    <section id="view-home" class="view" data-view="home">
+      <div class="hero">
+        <h1>LexGuard</h1>
+        <p class="hero__tagline">
+          An open-source legal-learning &amp; case-reference platform that organizes
+          information from <strong>official Indian sources</strong> into structured,
+          understandable, and traceable records.
+        </p>
+        <p class="hero__pipeline">
+          Collect → Structure → Simplify → Verify → Connect → Reference official sources
+        </p>
+        <div class="hero__actions">
+          <button type="button" class="btn btn--primary" data-goto="dashboard">Open dashboard</button>
+          <button type="button" class="btn btn--ghost" data-goto="about">Read the disclaimer</button>
+        </div>
+      </div>
+
+      <div class="grid grid--3">
+        <div class="card">
+          <h2>📌 Source Provenance</h2>
+          <p>Records where legal information came from — source, publisher, official URL, retrieval date, and a stable file's SHA-256 hash.</p>
+          <button type="button" class="btn btn--ghost" data-goto="sources">Try source form →</button>
+        </div>
+        <div class="card">
+          <h2>🗂️ Structured Case References</h2>
+          <p>Turns a judgment into an organized record with parties, facts, issues, provisions, actions, holdings, and review status.</p>
+          <button type="button" class="btn btn--ghost" data-goto="case-editor">Open case editor →</button>
+        </div>
+        <div class="card">
+          <h2>🔐 Integrity &amp; Review</h2>
+          <p>SHA-256 hashing detects file changes/corruption alongside a formal review-status lifecycle — never a single "verified" claim.</p>
+          <button type="button" class="btn btn--ghost" data-goto="hash-demo">Try SHA-256 demo →</button>
+        </div>
+      </div>
+
+      <div class="notice notice--info">
+        <strong>Phase 1–3 Foundation.</strong> This front-end is an interactive prototype.
+        Real validation, persistence, and integrity checks live in the FastAPI back-end
+        (Pydantic schemas, SQLAlchemy models, Python SHA-256 service, and 16 automated tests).
+      </div>
+    </section>
+
+    <!-- =================== DASHBOARD =================== -->
+    <section id="view-dashboard" class="view" data-view="dashboard" hidden>
+      <h1>Dashboard</h1>
+      <p>Current status of the LexGuard Phase 1–3 foundation build.</p>
+      <dl id="metricGrid" class="metric-grid"></dl>
+
+      <div class="grid grid--2">
+        <div class="card">
+          <h2>Quick actions</h2>
+          <ul class="link-list">
+            <li><button type="button" class="link-btn" data-goto="drafts">Inspect quarantined drafts</button></li>
+            <li><button type="button" class="link-btn" data-goto="sources">Register a source (prototype)</button></li>
+            <li><button type="button" class="link-btn" data-goto="case-editor">Open case editor</button></li>
+            <li><button type="button" class="link-btn" data-goto="hash-demo">Compute a SHA-256 hash</button></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2>Live API</h2>
+          <p>The FastAPI back-end exposes two endpoints:</p>
+          <ul class="code-list">
+            <li><code>GET /</code> — application identity</li>
+            <li><code>GET /api/health</code> — DB health + reviewed/draft counts</li>
+          </ul>
+          <p>Run <code>uvicorn backend.main:app --reload</code> and visit <code>/api/health</code>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================== DRAFTS =================== -->
+    <section id="view-drafts" class="view" data-view="drafts" hidden>
+      <h1>Draft Quarantine</h1>
+      <p>
+        Draft records are <strong>kept separate</strong> from reviewed content. They are never
+        silently promoted to reviewed status. Each record below is a placeholder representing
+        a quarantined legacy item.
+      </p>
+
+      <div class="filters" role="group" aria-label="Filter drafts">
+        <label class="field">
+          <span class="field__label">Search text</span>
+          <input type="search" id="draftTextFilter" placeholder="Filter by label…" />
+        </label>
+        <label class="field">
+          <span class="field__label">Review status</span>
+          <select id="draftStatusFilter"></select>
+        </label>
+      </div>
+
+      <div class="two-col">
+        <div class="two-col__side">
+          <ul id="draftList" class="draft-list" role="listbox" aria-label="Draft records"></ul>
+        </div>
+        <div id="draftDetail" class="two-col__main panel" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- =================== SOURCES =================== -->
+    <section id="view-sources" class="view" data-view="sources" hidden>
+      <h1>Source Registry (Prototype)</h1>
+      <p>
+        Every piece of content must link to <strong>exactly one</strong> identified official
+        source. The back-end enforces this with a SQLite <code>CHECK</code> constraint and a
+        Pydantic <code>@model_validator</code>. This form demonstrates the rule in the UI.
+      </p>
+
+      <form id="sourceForm" class="form-card" novalidate>
+        <div class="form-grid">
+          <label class="field">
+            <span class="field__label">Official source URL</span>
+            <input type="url" id="srcUrl" placeholder="https://judgments.ecourts.gov.in/…" required />
+            <span id="srcUrlError" class="field__error" role="alert"></span>
+          </label>
+
+          <label class="field">
+            <span class="field__label">SHA-256 (optional, for stable files)</span>
+            <input type="text" id="srcSha" placeholder="64 hex characters" autocomplete="off" />
+            <span id="srcShaError" class="field__error" role="alert"></span>
+          </label>
+        </div>
+
+        <fieldset class="field-group">
+          <legend>Link to exactly one content owner</legend>
+          <div class="checkbox-grid">
+            <label class="check"><input type="checkbox" name="owner" value="case_reference" /> Case reference</label>
+            <label class="check"><input type="checkbox" name="owner" value="court_role" /> Court role</label>
+            <label class="check"><input type="checkbox" name="owner" value="workflow_guide" /> Workflow guide</label>
+          </div>
+          <span id="ownerError" class="field__error" role="alert"></span>
+        </fieldset>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary">Validate (prototype)</button>
+          <button type="reset" class="btn btn--ghost">Reset</button>
+        </div>
+        <p id="sourceFormResult" class="form-result" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <!-- =================== CASE EDITOR =================== -->
+    <section id="view-case-editor" class="view" data-view="case-editor" hidden>
+      <h1>Case Editor (Prototype)</h1>
+      <p>
+        Structured entry for a case reference. Tabs organize core metadata, parties,
+        statutory provisions, ordered issues, and ordered procedural actions. The right
+        pane shows a live preview — nothing is saved to the server.
+      </p>
+
+      <div class="tabbar" id="caseTabbar" role="tablist" aria-label="Case editor sections"></div>
+
+      <div class="two-col two-col--editor">
+        <div class="two-col__main">
+          <!-- CORE -->
+          <div id="panel-core" class="case-panel panel" data-panel="core" role="tabpanel" aria-labelledby="tab-core">
+            <div class="form-grid">
+              <label class="field"><span class="field__label">Slug</span><input type="text" id="caseSlug" placeholder="lowercase-with-hyphens" /></label>
+              <label class="field"><span class="field__label">Case title</span><input type="text" id="caseTitle" placeholder="Petitioner v. Respondent" /></label>
+              <label class="field"><span class="field__label">Case number</span><input type="text" id="caseNumber" placeholder="e.g. Writ Petition (Civil) 135 of 1970" /></label>
+              <label class="field"><span class="field__label">Citation</span><input type="text" id="caseCitation" placeholder="AIR 1973 SC 1461" /></label>
+              <label class="field"><span class="field__label">Court</span><input type="text" id="caseCourt" placeholder="Supreme Court of India" /></label>
+              <label class="field"><span class="field__label">Case type</span><input type="text" id="caseType" placeholder="Constitutional / Civil / Criminal …" /></label>
+              <label class="field"><span class="field__label">Decision date</span><input type="date" id="caseDecisionDate" /></label>
+              <label class="field"><span class="field__label">Procedural stage</span><input type="text" id="caseStage" placeholder="Original jurisdiction / Appeal …" /></label>
+              <label class="field field--full"><span class="field__label">Outcome</span><input type="text" id="caseOutcome" placeholder="Petition allowed / dismissed …" /></label>
+              <label class="field">
+                <span class="field__label">Review status</span>
+                <select id="caseReviewStatus"></select>
+              </label>
+              <label class="field"><span class="field__label">Last reviewed at</span><input type="datetime-local" id="caseLastReviewed" /></label>
+              <label class="field field--full"><span class="field__label">Facts summary</span><textarea id="caseFacts" rows="3" placeholder="Key facts…"></textarea></label>
+              <label class="field field--full"><span class="field__label">Holding summary</span><textarea id="caseHolding" rows="3" placeholder="Court's holding…"></textarea></label>
+            </div>
+          </div>
+
+          <!-- PARTIES -->
+          <div id="panel-parties" class="case-panel panel" data-panel="parties" role="tabpanel" aria-labelledby="tab-parties" hidden>
+            <div class="panel__header">
+              <h2>Parties</h2>
+              <button type="button" class="btn btn--small" data-add="parties">+ Add party</button>
+            </div>
+            <ul id="partiesList" class="repeat-list"></ul>
+          </div>
+
+          <!-- PROVISIONS -->
+          <div id="panel-provisions" class="case-panel panel" data-panel="provisions" role="tabpanel" aria-labelledby="tab-provisions" hidden>
+            <div class="panel__header">
+              <h2>Statutory provisions cited</h2>
+              <button type="button" class="btn btn--small" data-add="provisions">+ Add provision</button>
+            </div>
+            <ul id="provisionsList" class="repeat-list"></ul>
+          </div>
+
+          <!-- ISSUES -->
+          <div id="panel-issues" class="case-panel panel" data-panel="issues" role="tabpanel" aria-labelledby="tab-issues" hidden>
+            <div class="panel__header">
+              <h2>Ordered issues</h2>
+              <button type="button" class="btn btn--small" data-add="issues">+ Add issue</button>
+            </div>
+            <p id="issuesOrderError" class="field__error" role="alert"></p>
+            <ul id="issuesList" class="repeat-list"></ul>
+          </div>
+
+          <!-- ACTIONS -->
+          <div id="panel-actions" class="case-panel panel" data-panel="actions" role="tabpanel" aria-labelledby="tab-actions" hidden>
+            <div class="panel__header">
+              <h2>Ordered procedural actions</h2>
+              <button type="button" class="btn btn--small" data-add="actions">+ Add action</button>
+            </div>
+            <p id="actionsOrderError" class="field__error" role="alert"></p>
+            <ul id="actionsList" class="repeat-list"></ul>
+          </div>
+        </div>
+
+        <aside class="two-col__side preview-panel" aria-label="Live preview">
+          <h2>Live preview</h2>
+          <div id="casePreviewBody" class="preview-body"></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- =================== COURT LEARNING =================== -->
+    <section id="view-court-learning" class="view" data-view="court-learning" hidden>
+      <h1>Court Learning (Groundwork)</h1>
+      <p>Educational content about court roles and publicly documented workflows.</p>
+
+      <div class="grid grid--2">
+        <form id="courtRoleForm" class="form-card" novalidate>
+          <h2>Court role</h2>
+          <div class="form-grid">
+            <label class="field"><span class="field__label">Slug</span><input type="text" placeholder="lowercase-slug" /></label>
+            <label class="field"><span class="field__label">Title</span><input type="text" placeholder="e.g. Court Clerk" /></label>
+            <label class="field field--full"><span class="field__label">Description</span><textarea rows="3" placeholder="What the role does in plain language…"></textarea></label>
+            <label class="field">
+              <span class="field__label">Review status</span>
+              <select class="role-review-status"></select>
+            </label>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn--ghost">Prototype save (no-op)</button>
+          </div>
+        </form>
+
+        <form id="workflowGuideForm" class="form-card" novalidate>
+          <h2>Workflow guide</h2>
+          <div class="form-grid">
+            <label class="field"><span class="field__label">Slug</span><input type="text" placeholder="lowercase-slug" /></label>
+            <label class="field"><span class="field__label">Title</span><input type="text" placeholder="e.g. How to verify a citation" /></label>
+            <label class="field field--full"><span class="field__label">Description</span><textarea rows="3" placeholder="Plain-language overview…"></textarea></label>
+            <label class="field">
+              <span class="field__label">Review status</span>
+              <select class="guide-review-status"></select>
+            </label>
+          </div>
+
+          <div class="panel__header" style="margin-top:16px;">
+            <h3>Ordered steps</h3>
+            <button type="button" id="addWorkflowStep" class="btn btn--small">+ Add step</button>
+          </div>
+          <ul id="workflowStepsList" class="repeat-list"></ul>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn--ghost">Prototype save (no-op)</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- =================== REVIEW STATUS =================== -->
+    <section id="view-review-status" class="view" data-view="review-status" hidden>
+      <h1>Review-Status Lifecycle</h1>
+      <p>
+        Provenance, integrity, review status, and relevance are kept <strong>separate</strong> —
+        never collapsed into a single "verified" claim. A review status is not a legal certificate.
+      </p>
+
+      <div class="lifecycle">
+        <pre>draft → source_linked → metadata_reviewed → file_verified
+        needs_correction · superseded · withdrawn</pre>
+      </div>
+
+      <ul id="statusLegend" class="status-legend"></ul>
+    </section>
+
+    <!-- =================== SHA-256 DEMO =================== -->
+    <section id="view-hash-demo" class="view" data-view="hash-demo" hidden>
+      <h1>SHA-256 Integrity Demonstration</h1>
+      <p>
+        LexGuard uses SHA-256 to detect when a saved source file has changed or been corrupted.
+        Hashing proves <em>file-version integrity</em>, not legal authenticity. Python computes
+        the digest in production using 8&nbsp;KB chunked reads; this browser demo uses the
+        Web Crypto API so you can see the same principle interactively.
+      </p>
+
+      <div class="form-card">
+        <label class="field">
+          <span class="field__label">Pick any file</span>
+          <input type="file" id="hashFileInput" />
+        </label>
+
+        <div id="hashUnsupported" class="notice notice--warn" hidden>
+          <span>Your browser does not expose the Web Crypto subtle API needed for this demo.</span>
+        </div>
+
+        <div id="hashResult" class="hash-result" hidden>
+          <dl class="hash-result__dl">
+            <dt>File name</dt><dd id="hashFileName"></dd>
+            <dt>Size</dt><dd id="hashByteSize"></dd>
+            <dt>SHA-256</dt>
+            <dd>
+              <code id="hashValue" class="hash-value"></code>
+            </dd>
+          </dl>
+          <div class="form-actions">
+            <button type="button" id="hashCopyBtn" class="btn btn--small">Copy hash</button>
+            <button type="button" id="hashResetBtn" class="btn btn--small btn--ghost">Reset</button>
+            <span id="hashCopyConfirm" class="copy-confirm" aria-live="polite"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="notice notice--info">
+        <strong>Try this:</strong> Create a text file with <code>hello</code> on one line, hash
+        it, then change a single character and hash again. The digest changes completely —
+        that's the avalanche effect at work.
+      </div>
+    </section>
+
+    <!-- =================== DIAGRAMS =================== -->
+    <section id="view-diagrams" class="view" data-view="diagrams" hidden>
+      <h1>Data Model Diagrams</h1>
+      <p>
+        LexGuard's logical schema uses 13 tables organized into three groups: sources,
+        court-learning, and case-references. Placeholder frames are provided below; add
+        exported PNG/SVG diagrams to <code>backend/static/diagrams/</code> to display them.
+      </p>
+
+      <div class="grid grid--2">
+        <figure class="diagram-card" data-diagram="er">
+          <div class="diagram-toolbar">
+            <h2>Conceptual ER diagram</h2>
+            <div class="zoom-controls">
+              <button type="button" class="btn btn--small" data-zoom-out="er" aria-label="Zoom out">−</button>
+              <button type="button" class="btn btn--small" data-zoom-reset="er" aria-label="Reset zoom">Reset</button>
+              <button type="button" class="btn btn--small" data-zoom-in="er" aria-label="Zoom in">+</button>
+              <button type="button" class="btn btn--small" data-fullscreen="er" aria-label="Full screen">⤢</button>
+            </div>
+          </div>
+          <div class="diagram-frame">
+            <img class="diagram-image" src="/static/diagrams/er-diagram.png" alt="Conceptual Entity-Relationship diagram for LexGuard" />
+            <div class="diagram-placeholder" hidden>
+              <p>Diagram image not found.</p>
+              <p>Place an exported PNG/SVG at <code>backend/static/diagrams/er-diagram.png</code>.</p>
+            </div>
+          </div>
+        </figure>
+
+        <figure class="diagram-card" data-diagram="schema">
+          <div class="diagram-toolbar">
+            <h2>Logical relational schema</h2>
+            <div class="zoom-controls">
+              <button type="button" class="btn btn--small" data-zoom-out="schema" aria-label="Zoom out">−</button>
+              <button type="button" class="btn btn--small" data-zoom-reset="schema" aria-label="Reset zoom">Reset</button>
+              <button type="button" class="btn btn--small" data-zoom-in="schema" aria-label="Zoom in">+</button>
+              <button type="button" class="btn btn--small" data-fullscreen="schema" aria-label="Full screen">⤢</button>
+            </div>
+          </div>
+          <div class="diagram-frame">
+            <img class="diagram-image" src="/static/diagrams/schema-diagram.png" alt="Logical relational schema diagram for LexGuard showing 13 tables" />
+            <div class="diagram-placeholder" hidden>
+              <p>Diagram image not found.</p>
+              <p>Place an exported PNG/SVG at <code>backend/static/diagrams/schema-diagram.png</code>.</p>
+            </div>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- =================== ABOUT =================== -->
+    <section id="view-about" class="view" data-view="about" hidden>
+      <h1>About &amp; Disclaimer</h1>
+
+      <div class="card">
+        <h2>What LexGuard is</h2>
+        <p>
+          LexGuard is an open-source <strong>legal learning and case-reference platform</strong>
+          for India. It collects information from official sources, structures it into
+          understandable records, and preserves the provenance chain back to those sources.
+        </p>
+      </div>
+
+      <div class="notice notice--warn">
+        <h2 style="margin-top:0">What LexGuard is not</h2>
+        <ul>
+          <li>It is <strong>not</strong> an AI lawyer or legal-advice chatbot.</li>
+          <li>It does <strong>not</strong> predict case outcomes.</li>
+          <li>It is <strong>not</strong> a court-management or e-filing system.</li>
+          <li>It is <strong>not</strong> an official court website and claims no official court affiliation.</li>
+          <li>It never tells a user what to do in a specific case.</li>
+          <li>It does <strong>not</strong> replace an advocate, or databases like SCC Online, Manupatra, or eCourts.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Technology</h2>
+        <ul>
+          <li><strong>Back-end:</strong> FastAPI + SQLAlchemy 2.0 + Pydantic v2 + SQLite</li>
+          <li><strong>Validation:</strong> Pydantic schemas with custom validators (slug, SHA-256, review status)</li>
+          <li><strong>Integrity:</strong> Python SHA-256 service (chunked 8&nbsp;KB reads)</li>
+          <li><strong>Seeding:</strong> Transactional, idempotent seeding with audit reports and draft quarantine</li>
+          <li><strong>Tests:</strong> 16 automated pytest tests (health, models, schemas, hash service)</li>
+          <li><strong>Front-end:</strong> Vanilla HTML/CSS/JS prototype — no build step</li>
+        </ul>
+      </div>
+
+      <p class="muted">
+        LexGuard provides <strong>educational legal information</strong>, not legal advice.
+        Official sources remain authoritative at all times.
+      </p>
+    </section>
+
+  </main>
+
+  <!-- Lightbox for diagrams -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Diagram viewer" hidden>
+    <div class="lightbox__toolbar">
+      <button type="button" id="lightboxZoomOut" class="btn btn--small" aria-label="Zoom out">−</button>
+      <button type="button" id="lightboxZoomReset" class="btn btn--small" aria-label="Reset zoom">Reset</button>
+      <button type="button" id="lightboxZoomIn" class="btn btn--small" aria-label="Zoom in">+</button>
+      <button type="button" id="lightboxClose" class="btn btn--small" aria-label="Close">Close ✕</button>
+    </div>
+    <div class="lightbox__frame">
+      <img id="lightboxImage" class="lightbox__image" alt="" />
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>LexGuard — Educational legal information, not legal advice. Official sources remain authoritative.</p>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
